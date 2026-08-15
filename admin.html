@@ -378,24 +378,29 @@
         <div id="tab-skills" class="tab-pane">
           <div class="card glass-hover-fx">
             <h3 class="card-title text-gradient"><i class="fa-solid fa-tags" style="margin-right: 8px;"></i>Skills & Technologies</h3>
-            <p class="text-muted" style="font-size: var(--font-size-sm); margin-bottom: var(--space-lg);">Manage skills displayed inside the Skills category chipboard.</p>
+            <p class="text-muted" style="font-size: var(--font-size-sm); margin-bottom: var(--space-lg);">Manage your technical skills by category (comma-separated).</p>
             
-            <!-- Skill Creator Form -->
-            <div class="form-row" style="background: var(--bg-secondary); padding: var(--space-md); border-radius: var(--radius-md); border: 1px solid var(--border-color); margin-bottom: var(--space-lg); align-items: end;">
+            <div class="flex-col gap-md">
               <div class="form-group flex-col">
-                <label for="new-skill-name" class="editor-label">Skill / Tech Title</label>
-                <input type="text" id="new-skill-name" class="form-input" placeholder="e.g. Tensorflow">
+                <label for="skills-programming" class="editor-label">Languages (comma-separated)</label>
+                <input type="text" id="skills-programming" class="form-input" placeholder="e.g. Python, Java, C">
               </div>
               <div class="form-group flex-col">
-                <label for="new-skill-cat" class="editor-label">Skill Category Group</label>
-                <input type="text" id="new-skill-cat" class="form-input" placeholder="e.g. Core AI">
+                <label for="skills-ai" class="editor-label">AI & Machine Learning (comma-separated)</label>
+                <input type="text" id="skills-ai" class="form-input" placeholder="e.g. Machine Learning, Data Science">
               </div>
-              <button id="btn-add-skill" class="btn btn-primary" style="height: 48px;"><i class="fa-solid fa-plus" style="margin-right: 8px;"></i>Add Skill</button>
-            </div>
-
-            <!-- Skills List Grid -->
-            <div id="skills-cms-list" class="skills-cms-grid">
-              <!-- Rendered dynamically -->
+              <div class="form-group flex-col">
+                <label for="skills-web" class="editor-label">Web Development (comma-separated)</label>
+                <input type="text" id="skills-web" class="form-input" placeholder="e.g. HTML5, CSS3, PHP">
+              </div>
+              <div class="form-group flex-col">
+                <label for="skills-database" class="editor-label">Databases (comma-separated)</label>
+                <input type="text" id="skills-database" class="form-input" placeholder="e.g. SQL, MongoDB">
+              </div>
+              <div class="form-group flex-col">
+                <label for="skills-tools" class="editor-label">Tools & DevOps (comma-separated)</label>
+                <input type="text" id="skills-tools" class="form-input" placeholder="e.g. Git, Docker">
+              </div>
             </div>
           </div>
         </div>
@@ -562,7 +567,7 @@
 
         // Load values
         loadProfileTab();
-        renderSkillsTab();
+        loadSkillsTab();
         renderProjectsTab();
         renderMilestonesTab();
         renderCertificatesTab();
@@ -603,52 +608,26 @@
     }
 
     // 5. Tab 2: Skills Directory
-    const skillsList = document.getElementById('skills-cms-list');
-    const skillNameInput = document.getElementById('new-skill-name');
-    const skillCatInput = document.getElementById('new-skill-cat');
-    const addSkillBtn = document.getElementById('btn-add-skill');
-
-    function renderSkillsTab() {
-      skillsList.innerHTML = '';
-      const skills = db.skills || [];
-
-      skills.forEach((skill, idx) => {
-        const chip = document.createElement('div');
-        chip.className = 'skill-cms-chip';
-        chip.innerHTML = `
-          <div class="flex-col" style="gap: 2px;">
-            <strong style="font-size: var(--font-size-sm);">${skill.name}</strong>
-            <span class="text-muted" style="font-size: 0.75rem; text-transform: uppercase; letter-spacing:0.02em;">${skill.category}</span>
-          </div>
-          <button class="btn-chip-delete" onclick="deleteSkill(${idx})" aria-label="Delete skill"><i class="fa-solid fa-trash"></i></button>
-        `;
-        skillsList.appendChild(chip);
-      });
+    function loadSkillsTab() {
+      const s = db.skills || {};
+      document.getElementById('skills-programming').value = (s.programming || []).map(x => x.name).join(', ');
+      document.getElementById('skills-ai').value = (s.ai || []).map(x => x.name).join(', ');
+      document.getElementById('skills-web').value = (s.web || []).map(x => x.name).join(', ');
+      document.getElementById('skills-database').value = (s.database || []).map(x => x.name).join(', ');
+      document.getElementById('skills-tools').value = (s.tools || []).map(x => x.name).join(', ');
     }
 
-    window.deleteSkill = function(idx) {
-      db.skills.splice(idx, 1);
-      renderSkillsTab();
-      showToast('Skill chip removed.', 'success');
-    };
-
-    addSkillBtn.addEventListener('click', () => {
-      const name = skillNameInput.value.trim();
-      const cat = skillCatInput.value.trim();
-
-      if (!name || !cat) {
-        showToast('Please enter both skill name and category group.', 'error');
-        return;
-      }
-
-      if (!db.skills) db.skills = [];
-      db.skills.push({ name: name, category: cat });
+    function syncSkillsFromForms() {
+      if (!db.skills) db.skills = {};
       
-      skillNameInput.value = '';
-      skillCatInput.value = '';
-      renderSkillsTab();
-      showToast('Skill chip added!', 'success');
-    });
+      const parseSkills = (val) => val.split(',').map(x => x.trim()).filter(x => x.length > 0).map(name => ({ name }));
+
+      db.skills.programming = parseSkills(document.getElementById('skills-programming').value);
+      db.skills.ai = parseSkills(document.getElementById('skills-ai').value);
+      db.skills.web = parseSkills(document.getElementById('skills-web').value);
+      db.skills.database = parseSkills(document.getElementById('skills-database').value);
+      db.skills.tools = parseSkills(document.getElementById('skills-tools').value);
+    }
 
     // 6. Tab 3: Projects Gallery
     const projectsList = document.getElementById('projects-cms-list');
@@ -1022,6 +1001,8 @@
     function syncFormsToDatabase() {
       // Sync profile & bio
       syncProfileFromForms();
+      // Sync skills
+      syncSkillsFromForms();
       // Sync projects
       syncProjectsFromForms();
       // Sync milestones
@@ -1064,7 +1045,7 @@
           showToast('Database changes saved to portfolio.json!', 'success');
           // Reload panels to align structures
           loadProfileTab();
-          renderSkillsTab();
+          loadSkillsTab();
           renderProjectsTab();
           renderMilestonesTab();
           renderCertificatesTab();
