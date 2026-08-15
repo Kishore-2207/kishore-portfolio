@@ -47,6 +47,35 @@
     grid-template-columns: 1fr;
     gap: var(--space-2xl);
   }
+
+  .hero-grid {
+    grid-template-columns: 1fr;
+    gap: var(--space-xl);
+    text-align: center;
+  }
+  
+  .hero-content {
+    align-items: center;
+  }
+  
+  .hero-lead {
+    margin-left: auto;
+    margin-right: auto;
+  }
+  
+  .hero-buttons {
+    justify-content: center;
+  }
+  
+  .hero-socials {
+    justify-content: center;
+  }
+  
+  .avatar-ring-outer {
+    width: 320px;
+    height: 320px;
+    margin-top: var(--space-md);
+  }
 }
 
 /* --- 5. Breakpoint: 768px (Tablets - Portrait & Large Phones) --- */
@@ -198,6 +227,11 @@
 
   .toast {
     min-width: 100%;
+  }
+
+  .avatar-ring-outer {
+    width: 250px;
+    height: 250px;
   }
 }
 
