@@ -1,0 +1,190 @@
+/* ==========================================================================
+   CSS DESIGN SYSTEM VARIABLES (variables.css)
+   Contains core tokens: colors, spacing, typography, motion, shadows, and themes.
+   ========================================================================== */
+
+:root {
+  /* --- Brand HSL Color Core --- */
+  --primary-h: 239;
+  --primary-s: 84%;
+  --primary-l: 67%; /* #6366f1 (Indigo) */
+  
+  --secondary-h: 271;
+  --secondary-s: 91%;
+  --secondary-l: 65%; /* #a855f7 (Purple) */
+  
+  --accent-h: 190;
+  --accent-s: 90%;
+  --accent-l: 50%; /* #0ea5e9 (Cyan) */
+
+  --success-h: 142;
+  --success-s: 71%;
+  --success-l: 45%; /* #22c55e (Green) */
+
+  --error-h: 0;
+  --error-s: 84%;
+  --error-l: 60%; /* #ef4444 (Red) */
+
+  /* --- Design Tokens: Typography --- */
+  --font-body: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  --font-heading: 'Outfit', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  
+  --font-size-xs: 0.75rem;
+  --font-size-sm: 0.875rem;
+  --font-size-base: 1rem;
+  --font-size-md: 1.125rem;
+  --font-size-lg: 1.25rem;
+  --font-size-xl: 1.5rem;
+  --font-size-2xl: 1.875rem;
+  --font-size-3xl: 2.25rem;
+  --font-size-4xl: 3rem;
+  --font-size-5xl: 3.75rem;
+  --font-size-6xl: 4.5rem;
+
+  --font-weight-light: 300;
+  --font-weight-regular: 400;
+  --font-weight-medium: 500;
+  --font-weight-semibold: 600;
+  --font-weight-bold: 700;
+  --font-weight-extrabold: 800;
+
+  --line-height-tight: 1.2;
+  --line-height-snug: 1.4;
+  --line-height-normal: 1.6;
+
+  /* --- Design Tokens: Spacing Scale --- */
+  --space-xxs: 0.125rem;
+  --space-xs: 0.25rem;
+  --space-sm: 0.5rem;
+  --space-md: 1rem;
+  --space-lg: 1.5rem;
+  --space-xl: 2rem;
+  --space-2xl: 3rem;
+  --space-3xl: 4rem;
+  --space-4xl: 6rem;
+  --space-5xl: 8rem;
+
+  /* --- Design Tokens: Border Radii --- */
+  --radius-xs: 4px;
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 16px;
+  --radius-xl: 24px;
+  --radius-xxl: 32px;
+  --radius-full: 9999px;
+
+  /* --- Design Tokens: Layout Containers --- */
+  --container-sm: 640px;
+  --container-md: 768px;
+  --container-lg: 1024px;
+  --container-xl: 1280px;
+  --container-xxl: 1440px;
+
+  /* --- Design Tokens: Layering Z-Index --- */
+  --z-back: -10;
+  --z-base: 1;
+  --z-dropdown: 100;
+  --z-sticky: 200;
+  --z-nav: 500;
+  --z-modal: 1000;
+  --z-toast: 2000;
+
+  /* --- Design Tokens: Motion and Transitions --- */
+  --transition-fast: 0.15s cubic-bezier(0.4, 0, 0.2, 1);
+  --transition-normal: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  --transition-slow: 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+  --transition-bounce: 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+
+  /* --- Design Tokens: Screen Breakpoint Guidelines (For Reference) --- */
+  --bp-360: 360px;
+  --bp-576: 576px;
+  --bp-768: 768px;
+  --bp-992: 992px;
+  --bp-1200: 1200px;
+  --bp-1440: 1440px;
+  --bp-1600: 1600px;
+
+  /* --- Component Tokens: Buttons --- */
+  --btn-padding-y: 0.8rem;
+  --btn-padding-x: 1.8rem;
+  --btn-border-width: 1.5px;
+  --btn-letter-spacing: 0.03em;
+  
+  /* --- Component Tokens: Cards --- */
+  --card-padding-mobile: 1.25rem;
+  --card-padding-desktop: 2rem;
+  --card-border-width: 1px;
+
+  /* --- Dynamic Theme: Dark Mode (Default) --- */
+  --bg-primary: #030712;
+  --bg-secondary: #0b0f19;
+  --bg-tertiary: #111827;
+  
+  --text-primary: #f3f4f6;
+  --text-secondary: #9ca3af;
+  --text-muted: #6b7280;
+  
+  --border-color: rgba(255, 255, 255, 0.07);
+  --border-hover: rgba(255, 255, 255, 0.15);
+
+  --shadow-color: rgba(0, 0, 0, 0.4);
+  --shadow-sm: 0 2px 4px var(--shadow-color);
+  --shadow-md: 0 4px 8px var(--shadow-color), 0 1px 3px rgba(0, 0, 0, 0.1);
+  --shadow-lg: 0 10px 25px -5px var(--shadow-color), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
+  --shadow-xl: 0 25px 50px -12px var(--shadow-color);
+  
+  /* Glassmorphism Configuration */
+  --glass-bg: rgba(11, 15, 25, 0.65);
+  --glass-border: rgba(255, 255, 255, 0.06);
+  --glass-backdrop: blur(16px);
+  --glass-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+
+  /* Special Interactive Highlights */
+  --color-primary: hsl(var(--primary-h), var(--primary-s), var(--primary-l));
+  --color-secondary: hsl(var(--secondary-h), var(--secondary-s), var(--secondary-l));
+  --color-accent: hsl(var(--accent-h), var(--accent-s), var(--accent-l));
+  --color-success: hsl(var(--success-h), var(--success-s), var(--success-l));
+  --color-error: hsl(var(--error-h), var(--error-s), var(--error-l));
+
+  --glow-primary: hsla(var(--primary-h), var(--primary-s), var(--primary-l), 0.15);
+  --glow-secondary: hsla(var(--secondary-h), var(--secondary-s), var(--secondary-l), 0.15);
+  
+  --bg-gradient: linear-gradient(135deg, var(--bg-primary), var(--bg-secondary));
+  --brand-gradient: linear-gradient(135deg, var(--color-primary), var(--color-secondary));
+  --text-gradient: linear-gradient(135deg, var(--text-primary), var(--text-secondary));
+  --glow-shadow: 0 0 30px hsla(var(--primary-h), var(--primary-s), var(--primary-l), 0.3);
+}
+
+/* --- Dynamic Theme: Light Mode Override --- */
+[data-theme="light"] {
+  --bg-primary: #f8fafc;
+  --bg-secondary: #ffffff;
+  --bg-tertiary: #f1f5f9;
+  
+  --text-primary: #0f172a;
+  --text-secondary: #475569;
+  --text-muted: #94a3b8;
+  
+  --border-color: rgba(15, 23, 42, 0.08);
+  --border-hover: rgba(15, 23, 42, 0.18);
+
+  --shadow-color: rgba(15, 23, 42, 0.05);
+  --shadow-sm: 0 1px 3px var(--shadow-color);
+  --shadow-md: 0 4px 6px -1px var(--shadow-color), 0 2px 4px -2px rgba(15, 23, 42, 0.05);
+  --shadow-lg: 0 10px 15px -3px var(--shadow-color), 0 4px 6px -4px rgba(15, 23, 42, 0.05);
+  --shadow-xl: 0 20px 25px -5px var(--shadow-color), 0 10px 10px -5px rgba(15, 23, 42, 0.04);
+  
+  /* Glassmorphism Configuration */
+  --glass-bg: rgba(255, 255, 255, 0.7);
+  --glass-border: rgba(15, 23, 42, 0.05);
+  --glass-backdrop: blur(16px);
+  --glass-shadow: 0 8px 32px 0 rgba(15, 23, 42, 0.06);
+
+  /* Special Interactive Highlights */
+  --glow-primary: hsla(var(--primary-h), var(--primary-s), var(--primary-l), 0.08);
+  --glow-secondary: hsla(var(--secondary-h), var(--secondary-s), var(--secondary-l), 0.08);
+
+  --bg-gradient: linear-gradient(135deg, var(--bg-primary), var(--bg-secondary));
+  --text-gradient: linear-gradient(135deg, var(--text-primary), var(--text-secondary));
+  --glow-shadow: 0 0 30px hsla(var(--primary-h), var(--primary-s), var(--primary-l), 0.15);
+}

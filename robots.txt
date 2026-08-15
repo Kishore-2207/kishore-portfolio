@@ -1,0 +1,8 @@
+User-agent: *
+Allow: /
+
+# Host
+Host: https://kishorem.dev
+
+# Sitemap location
+Sitemap: https://kishorem.dev/sitemap.xml

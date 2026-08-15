@@ -1,0 +1,224 @@
+/* ==========================================================================
+   HARDWARE-ACCELERATED ANIMATION SYSTEM (animations.css)
+   Built using GPU-friendly properties: opacity and transform.
+   Includes keyframes for loading, typing, gradients, and interactive triggers.
+   ========================================================================== */
+
+/* --- 1. Keyframes Specification --- */
+
+/* Infinite smooth float for hero visual elements */
+@keyframes float {
+  0% { transform: translateY(0px); }
+  50% { transform: translateY(-15px); }
+  100% { transform: translateY(0px); }
+}
+
+/* Dynamic background gradient shift */
+@keyframes gradient-shift {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+/* Typing cursor flash */
+@keyframes cursor-blink {
+  from, to { border-color: transparent; }
+  50% { border-color: var(--color-primary); }
+}
+
+/* Click ripple growth */
+@keyframes ripple-effect {
+  to {
+    transform: scale(4);
+    opacity: 0;
+  }
+}
+
+/* Entrance transitions */
+@keyframes fade-in-up {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Pulse animation for loading skeletons or glows */
+@keyframes glow-pulse {
+  0% { box-shadow: 0 0 15px rgba(99, 102, 241, 0.15); }
+  50% { box-shadow: 0 0 25px rgba(99, 102, 241, 0.35); }
+  100% { box-shadow: 0 0 15px rgba(99, 102, 241, 0.15); }
+}
+
+/* Modal overlay entrance */
+@keyframes overlay-fade {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+/* Modal box zoom */
+@keyframes modal-scale {
+  from {
+    opacity: 0;
+    transform: scale(0.9) translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+/* --- 2. Interactive Animation Trigger Classes --- */
+
+/* Hero Entrance Animations */
+.animate-hero-content {
+  animation: fade-in-up 0.8s cubic-bezier(0.25, 1, 0.5, 1) forwards;
+  will-change: transform, opacity;
+}
+
+.animate-hero-visual {
+  animation: float 6s ease-in-out infinite;
+  will-change: transform;
+}
+
+/* Infinite Gradient Flow (Applied to headings or glowing cards) */
+.gradient-animated {
+  background-size: 200% 200%;
+  animation: gradient-shift 8s ease infinite;
+  will-change: background-position;
+}
+
+/* Typing Cursor Effect */
+.typing-cursor {
+  border-right: 3px solid var(--color-primary);
+  animation: cursor-blink 0.75s step-end infinite;
+}
+
+/* Button Click Ripple Helper */
+.ripple-span {
+  position: absolute;
+  border-radius: var(--radius-full);
+  transform: scale(0);
+  background-color: rgba(255, 255, 255, 0.35);
+  animation: ripple-effect 0.6s linear;
+  pointer-events: none;
+  width: 20px;
+  height: 20px;
+  margin-left: -10px;
+  margin-top: -10px;
+}
+
+/* Scroll-triggered Project & Cards Reveal System */
+.reveal {
+  opacity: 0;
+  transform: translateY(40px) scale(0.98);
+  transition: opacity 0.8s cubic-bezier(0.25, 1, 0.5, 1), transform 0.8s cubic-bezier(0.25, 1, 0.5, 1);
+  will-change: transform, opacity;
+}
+
+.reveal.active {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+}
+
+/* Timeline specific stagger reveal classes */
+.timeline-reveal-left {
+  opacity: 0;
+  transform: translateX(-50px);
+  transition: opacity 0.8s cubic-bezier(0.25, 1, 0.5, 1), transform 0.8s cubic-bezier(0.25, 1, 0.5, 1);
+  will-change: transform, opacity;
+}
+
+.timeline-reveal-right {
+  opacity: 0;
+  transform: translateX(50px);
+  transition: opacity 0.8s cubic-bezier(0.25, 1, 0.5, 1), transform 0.8s cubic-bezier(0.25, 1, 0.5, 1);
+  will-change: transform, opacity;
+}
+
+.timeline-reveal-left.active,
+.timeline-reveal-right.active {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+/* Card Hover Elevation & Light Reflex */
+.card-hover-fx {
+  position: relative;
+  overflow: hidden;
+}
+
+.card-hover-fx::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -150%;
+  width: 50%;
+  height: 100%;
+  background: linear-gradient(
+    to right,
+    rgba(255, 255, 255, 0) 0%,
+    rgba(255, 255, 255, 0.05) 50%,
+    rgba(255, 255, 255, 0) 100%
+  );
+  transform: skewX(-25deg);
+  transition: 0.75s;
+  pointer-events: none;
+}
+
+.card-hover-fx:hover::before {
+  left: 150%;
+  transition: 0.75s;
+}
+
+/* Interactive Image Hover Zoom & Contrast */
+.img-hover-container {
+  overflow: hidden;
+  border-radius: inherit;
+}
+
+.img-hover-target {
+  transition: transform var(--transition-slow) cubic-bezier(0.25, 1, 0.5, 1), filter var(--transition-slow) ease;
+  will-change: transform, filter;
+}
+
+.img-hover-container:hover .img-hover-target {
+  transform: scale(1.06);
+  filter: brightness(1.05) contrast(1.02);
+}
+
+/* Glassmorphic Active Hover Border Glow */
+.glass-hover-fx {
+  transition: border-color var(--transition-normal), box-shadow var(--transition-normal), background var(--transition-normal);
+}
+
+.glass-hover-fx:hover {
+  border-color: var(--border-hover);
+  background: rgba(255, 255, 255, 0.05);
+  box-shadow: var(--shadow-lg), 0 0 25px rgba(99, 102, 241, 0.2);
+}
+
+/* Back-to-top floating cycle */
+.float-btn {
+  animation: float 3s ease-in-out infinite;
+  will-change: transform;
+}
+
+/* Modal activation animations */
+.modal-wrapper.active .modal-overlay {
+  animation: overlay-fade 0.35s ease forwards;
+}
+
+.modal-wrapper.active .modal-container {
+  animation: modal-scale 0.45s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+  will-change: transform, opacity;
+}
+
+/* Pulse highlight class */
+.pulse-highlight {
+  animation: glow-pulse 3s infinite;
+  will-change: box-shadow;
+}

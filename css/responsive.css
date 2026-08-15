@@ -1,0 +1,217 @@
+/* ==========================================================================
+   RESPONSIVE DESIGN OVERRIDES (responsive.css)
+   Contains media queries for 360, 576, 768, 992, 1200, 1440, and 1600px.
+   Strictly overrides properties that change. No duplicated base rules.
+   ========================================================================== */
+
+/* --- 1. Breakpoint: 1600px (Large Screens / Ultrawide) --- */
+@media (max-width: 1600px) {
+  :root {
+    --container-xxl: 1400px;
+  }
+}
+
+/* --- 2. Breakpoint: 1440px (Standard Desktop) --- */
+@media (max-width: 1440px) {
+  :root {
+    --container-xxl: 1240px;
+  }
+  h1 { font-size: var(--font-size-4xl); }
+  h2 { font-size: var(--font-size-3xl); }
+}
+
+/* --- 3. Breakpoint: 1200px (Laptops / Small Desktop) --- */
+@media (max-width: 1200px) {
+  :root {
+    --container-xxl: 1100px;
+    --space-5xl: 6rem; /* Shrink section gap */
+  }
+  .section-padding {
+    padding-top: var(--space-4xl);
+    padding-bottom: var(--space-4xl);
+  }
+}
+
+/* --- 4. Breakpoint: 992px (Tablets - Landscape) --- */
+@media (max-width: 992px) {
+  :root {
+    --container-xxl: 920px;
+  }
+  .nav-menu {
+    gap: var(--space-lg);
+  }
+  h1 { font-size: var(--font-size-3xl); }
+  h2 { font-size: var(--font-size-2xl); }
+  
+  .about-grid {
+    grid-template-columns: 1fr;
+    gap: var(--space-2xl);
+  }
+}
+
+/* --- 5. Breakpoint: 768px (Tablets - Portrait & Large Phones) --- */
+@media (max-width: 768px) {
+  :root {
+    --container-xxl: 100%;
+    --space-5xl: 4rem;
+  }
+
+  .section-padding {
+    padding-top: var(--space-3xl);
+    padding-bottom: var(--space-3xl);
+  }
+
+  /* Responsive Mobile Navigation Drawer */
+  .menu-toggle {
+    display: block; /* Show burger menu icon */
+  }
+
+  .nav-menu {
+    position: fixed;
+    top: 70px;
+    right: -100%;
+    width: 280px;
+    height: calc(100vh - 70px);
+    background-color: var(--bg-secondary);
+    border-left: 1px solid var(--border-color);
+    flex-direction: column;
+    align-items: flex-start;
+    padding: var(--space-2xl) var(--space-xl);
+    gap: var(--space-xl);
+    transition: right var(--transition-bounce);
+    box-shadow: var(--shadow-xl);
+    overflow-y: auto;
+  }
+
+  .nav-menu.active {
+    right: 0;
+  }
+
+  .nav-link {
+    font-size: var(--font-size-lg);
+    width: 100%;
+  }
+
+  .nav-link::after {
+    bottom: -4px; /* Adjust highlight offset */
+  }
+
+  .nav-actions {
+    margin-left: auto;
+    margin-right: var(--space-md);
+  }
+
+  /* Typography Scales */
+  h1 { font-size: 2.5rem; }
+  h2 { font-size: 2rem; }
+  h3 { font-size: 1.75rem; }
+  
+  .section-title {
+    margin-bottom: var(--space-lg);
+  }
+  
+  .section-desc {
+    margin-bottom: var(--space-2xl);
+  }
+
+  /* Adjust Modal padding */
+  .modal-container {
+    padding: var(--space-lg);
+    width: 95%;
+  }
+
+  /* About Timeline responsive layout */
+  .timeline-line {
+    left: 16px;
+    transform: none;
+  }
+  
+  .timeline-item {
+    width: 100%;
+    justify-content: flex-start !important;
+    padding-left: var(--space-2xl) !important;
+    padding-right: 0 !important;
+  }
+  
+  .timeline-left {
+    left: 0;
+  }
+  
+  .timeline-right {
+    left: 0;
+  }
+  
+  .timeline-dot {
+    left: 7px !important;
+    right: auto !important;
+    top: 24px;
+  }
+
+  .timeline-card {
+    max-width: 100%;
+  }
+
+  .github-dashboard {
+    grid-template-columns: 1fr;
+  }
+
+  .contact-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* --- 6. Breakpoint: 576px (Smartphones - Landscape) --- */
+@media (max-width: 576px) {
+  :root {
+    --card-padding-desktop: var(--card-padding-mobile);
+  }
+
+  .container {
+    padding-left: var(--space-md);
+    padding-right: var(--space-md);
+  }
+
+  /* Stack button elements vertically if they overflow */
+  .hero-buttons,
+  .form-actions {
+    flex-direction: column;
+    width: 100%;
+    gap: var(--space-md);
+  }
+
+  .hero-buttons .btn,
+  .form-actions .btn {
+    width: 100%;
+  }
+
+  /* Reduce typography scales further */
+  h1 { font-size: 2rem; }
+  h2 { font-size: 1.75rem; }
+  h3 { font-size: 1.5rem; }
+
+  /* Toast Container adjustments */
+  .toast-wrapper {
+    bottom: var(--space-md);
+    right: var(--space-md);
+    left: var(--space-md);
+  }
+
+  .toast {
+    min-width: 100%;
+  }
+}
+
+/* --- 7. Breakpoint: 360px (Ultra-small Phones) --- */
+@media (max-width: 360px) {
+  h1 { font-size: 1.75rem; }
+  h2 { font-size: 1.5rem; }
+  
+  .nav-logo {
+    font-size: var(--font-size-xl);
+  }
+
+  .btn {
+    padding: var(--space-sm) var(--space-md);
+    font-size: var(--font-size-sm);
+  }
+}

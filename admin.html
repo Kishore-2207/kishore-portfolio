@@ -1,0 +1,1111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Kishore M | Admin Control Panel</title>
+  
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;500;600;700;800&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+  
+  <!-- CSS Variables & Base Styles matching Main Site -->
+  <link rel="stylesheet" href="./css/variables.css">
+  <link rel="stylesheet" href="./css/style.css">
+  <link rel="stylesheet" href="./css/animations.css">
+  
+  <style>
+    body {
+      background: var(--bg-primary);
+      color: var(--text-primary);
+      min-height: 100vh;
+      font-family: var(--font-body);
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* Auth Lock Layer */
+    #auth-screen {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: var(--bg-primary);
+      z-index: 9999;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .auth-card {
+      width: 100%;
+      max-width: 400px;
+      text-align: center;
+    }
+
+    .auth-icon {
+      font-size: 3rem;
+      margin-bottom: var(--space-md);
+      background: var(--brand-gradient);
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    /* Admin Layout Structure */
+    .admin-header {
+      border-bottom: 1px solid var(--border-color);
+      background: var(--glass-bg);
+      backdrop-filter: var(--glass-backdrop);
+      padding: var(--space-md) 0;
+    }
+
+    .admin-brand {
+      display: flex;
+      align-items: center;
+      gap: var(--space-sm);
+      font-family: var(--font-heading);
+      font-size: var(--font-size-xl);
+      font-weight: var(--font-weight-bold);
+    }
+
+    .admin-container {
+      display: grid;
+      grid-template-columns: 260px 1fr;
+      gap: var(--space-xl);
+      margin-top: var(--space-xl);
+      align-items: start;
+    }
+
+    @media (max-width: 992px) {
+      .admin-container {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    /* Tabs Navigation */
+    .admin-sidebar {
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-xs);
+    }
+
+    .tab-btn {
+      display: flex;
+      align-items: center;
+      gap: var(--space-sm);
+      padding: var(--space-md);
+      border-radius: var(--radius-md);
+      border: 1px solid var(--border-color);
+      background: var(--glass-bg);
+      color: var(--text-secondary);
+      font-weight: var(--font-weight-semibold);
+      font-size: var(--font-size-sm);
+      text-align: left;
+      cursor: pointer;
+      transition: all var(--transition-fast);
+    }
+
+    .tab-btn:hover {
+      background: rgba(255, 255, 255, 0.05);
+      color: var(--text-primary);
+    }
+
+    .tab-btn.active {
+      background: var(--brand-gradient);
+      color: #fff;
+      border-color: transparent;
+      box-shadow: var(--shadow-md), var(--glow-primary);
+    }
+
+    /* Content Panes */
+    .tab-pane {
+      display: none;
+      animation: fadeIn var(--transition-normal) ease forwards;
+    }
+
+    .tab-pane.active {
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-lg);
+    }
+
+    .editor-label {
+      font-weight: var(--font-weight-semibold);
+      font-size: var(--font-size-sm);
+      color: var(--text-secondary);
+      margin-bottom: var(--space-xxs);
+    }
+
+    .form-row {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: var(--space-md);
+    }
+
+    /* Dynamic Item Management Cards */
+    .item-card {
+      border: 1px solid var(--border-color);
+      background: var(--bg-secondary);
+      border-radius: var(--radius-md);
+      padding: var(--space-md);
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-sm);
+      transition: border-color var(--transition-fast);
+    }
+
+    .item-card:hover {
+      border-color: var(--border-hover);
+    }
+
+    .btn-delete {
+      position: absolute;
+      top: 15px;
+      right: 15px;
+      background: rgba(239, 68, 68, 0.1);
+      border: 1px solid rgba(239, 68, 68, 0.2);
+      color: #ef4444;
+      width: 32px;
+      height: 32px;
+      border-radius: var(--radius-sm);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: all var(--transition-fast);
+    }
+
+    .btn-delete:hover {
+      background: #ef4444;
+      color: #fff;
+      transform: scale(1.05);
+    }
+
+    /* Skills Chips Grid */
+    .skills-cms-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+      gap: var(--space-sm);
+    }
+
+    .skill-cms-chip {
+      background: var(--bg-tertiary);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-sm);
+      padding: 0.5rem 0.75rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-size: var(--font-size-sm);
+    }
+
+    .btn-chip-delete {
+      background: none;
+      border: none;
+      color: var(--text-muted);
+      cursor: pointer;
+      font-size: 0.8rem;
+      transition: color var(--transition-fast);
+    }
+
+    .btn-chip-delete:hover {
+      color: #ef4444;
+    }
+
+    .json-editor-textarea {
+      font-family: 'Fira Code', monospace;
+      font-size: 0.85rem;
+      background: var(--bg-primary);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-md);
+      color: var(--text-primary);
+      padding: var(--space-md);
+      resize: none;
+      min-height: 480px;
+      line-height: 1.5;
+      outline: none;
+      transition: all var(--transition-fast);
+      width: 100%;
+    }
+
+    .json-editor-textarea:focus {
+      border-color: var(--color-primary);
+      box-shadow: 0 0 10px var(--glow-primary);
+    }
+
+    /* File upload elements */
+    .upload-container {
+      display: flex;
+      align-items: center;
+      gap: var(--space-md);
+    }
+
+    .upload-preview {
+      width: 120px;
+      height: 80px;
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-sm);
+      object-fit: cover;
+      background-color: var(--bg-tertiary);
+    }
+  </style>
+</head>
+<body data-theme="dark">
+
+  <!-- Authentication Screen -->
+  <div id="auth-screen">
+    <div class="card auth-card glass-hover-fx reveal active">
+      <i class="fa-solid fa-lock auth-icon"></i>
+      <h2 class="card-title" style="margin-bottom: var(--space-sm);">Admin Authentication</h2>
+      <p class="text-muted" style="margin-bottom: var(--space-lg);">Enter access password to manage portfolio details.</p>
+      
+      <form id="auth-form" class="flex-col gap-md">
+        <div class="form-group flex-col" style="text-align: left;">
+          <label for="admin-password" class="form-label">Password</label>
+          <input type="password" id="admin-password" class="form-input" required placeholder="••••••••">
+        </div>
+        <button type="submit" class="btn btn-primary" style="width: 100%;">
+          Verify Identity <i class="fa-solid fa-key" style="margin-left: 8px;"></i>
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <!-- Admin Application Header -->
+  <header class="site-header" style="position: sticky; background: var(--bg-secondary); border-bottom: 1px solid var(--border-color);">
+    <div class="container navbar">
+      <div class="admin-brand">
+        <img src="./assets/icons/favicon.png" alt="MK Logo" style="height: 32px; width: 32px; border-radius: var(--radius-full);">
+        <span>Kishore M | <span class="text-gradient">CMS Panel</span></span>
+      </div>
+      <div class="flex-row gap-md" style="align-items: center;">
+        <button id="theme-toggle-btn" class="btn-icon" aria-label="Toggle theme mode" style="width: 42px; height: 42px; display: flex; align-items: center; justify-content: center; background: var(--bg-tertiary); border: 1px solid var(--border-color); color: var(--text-primary); border-radius: var(--radius-full); cursor: pointer; transition: all var(--transition-fast);">
+          <i class="fa-solid fa-moon"></i>
+        </button>
+        <a href="index.html" class="btn" style="padding: 0.5rem 1.25rem; font-size: var(--font-size-sm);">
+          <i class="fa-solid fa-globe" style="margin-right: 8px;"></i>View Live Site
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <main style="flex: 1; padding-bottom: var(--space-5xl);">
+    <div class="container admin-container">
+      
+      <!-- Left sidebar navigation tabs -->
+      <aside class="admin-sidebar">
+        <button class="tab-btn active" data-tab="tab-profile"><i class="fa-solid fa-user-gear"></i>Profile & About</button>
+        <button class="tab-btn" data-tab="tab-skills"><i class="fa-solid fa-screwdriver-wrench"></i>Skills Directory</button>
+        <button class="tab-btn" data-tab="tab-projects"><i class="fa-solid fa-laptop-code"></i>Projects Gallery</button>
+        <button class="tab-btn" data-tab="tab-milestones"><i class="fa-solid fa-timeline"></i>Milestones & Experience</button>
+        <button class="tab-btn" data-tab="tab-credentials"><i class="fa-solid fa-award"></i>Credentials & Certs</button>
+        <button class="tab-btn" data-tab="tab-raw"><i class="fa-solid fa-code"></i>Raw JSON Editor</button>
+        
+        <div style="margin-top: var(--space-lg); padding: var(--space-sm); border-top: 1px solid var(--border-color);">
+          <button id="btn-save-master" class="btn btn-primary" style="width: 100%; gap: var(--space-xs);">
+            <i class="fa-solid fa-floppy-disk"></i> Save Database
+          </button>
+        </div>
+      </aside>
+
+      <!-- Right dynamic editing content panes -->
+      <section style="flex: 1;">
+        
+        <!-- Tab 1: Profile & About -->
+        <div id="tab-profile" class="tab-pane active">
+          <div class="card glass-hover-fx">
+            <h3 class="card-title text-gradient"><i class="fa-solid fa-address-card" style="margin-right: 8px;"></i>Personal Coordinates</h3>
+            <p class="text-muted" style="font-size: var(--font-size-sm); margin-bottom: var(--space-lg);">Update details for contact tags, hero headlines, and headers.</p>
+            
+            <div class="flex-col gap-md">
+              <div class="form-row">
+                <div class="form-group flex-col">
+                  <label for="prof-name" class="editor-label">Name</label>
+                  <input type="text" id="prof-name" class="form-input">
+                </div>
+                <div class="form-group flex-col">
+                  <label for="prof-title" class="editor-label">Academic Title</label>
+                  <input type="text" id="prof-title" class="form-input">
+                </div>
+              </div>
+              <div class="form-row">
+                <div class="form-group flex-col">
+                  <label for="prof-location" class="editor-label">Location / Coordinates</label>
+                  <input type="text" id="prof-location" class="form-input">
+                </div>
+                <div class="form-group flex-col">
+                  <label for="prof-email" class="editor-label">Contact Email</label>
+                  <input type="email" id="prof-email" class="form-input">
+                </div>
+              </div>
+              <div class="form-row">
+                <div class="form-group flex-col">
+                  <label for="prof-github" class="editor-label">GitHub Link</label>
+                  <input type="url" id="prof-github" class="form-input">
+                </div>
+                <div class="form-group flex-col">
+                  <label for="prof-linkedin" class="editor-label">LinkedIn Link</label>
+                  <input type="url" id="prof-linkedin" class="form-input">
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="card glass-hover-fx">
+            <h3 class="card-title text-gradient"><i class="fa-solid fa-paragraph" style="margin-right: 8px;"></i>Biography & Objectives</h3>
+            <p class="text-muted" style="font-size: var(--font-size-sm); margin-bottom: var(--space-lg);">Modify introduction headers and your professional bio blocks.</p>
+            
+            <div class="flex-col gap-md">
+              <div class="form-group flex-col">
+                <label for="prof-lead" class="editor-label">Hero Introduction Paragraph</label>
+                <textarea id="prof-lead" class="form-input form-textarea" style="height: 90px;"></textarea>
+              </div>
+              <div class="form-group flex-col">
+                <label for="prof-bio" class="editor-label">Biography Details</label>
+                <textarea id="prof-bio" class="form-input form-textarea" style="height: 140px;"></textarea>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Tab 2: Skills Directory -->
+        <div id="tab-skills" class="tab-pane">
+          <div class="card glass-hover-fx">
+            <h3 class="card-title text-gradient"><i class="fa-solid fa-tags" style="margin-right: 8px;"></i>Skills & Technologies</h3>
+            <p class="text-muted" style="font-size: var(--font-size-sm); margin-bottom: var(--space-lg);">Manage skills displayed inside the Skills category chipboard.</p>
+            
+            <!-- Skill Creator Form -->
+            <div class="form-row" style="background: var(--bg-secondary); padding: var(--space-md); border-radius: var(--radius-md); border: 1px solid var(--border-color); margin-bottom: var(--space-lg); align-items: end;">
+              <div class="form-group flex-col">
+                <label for="new-skill-name" class="editor-label">Skill / Tech Title</label>
+                <input type="text" id="new-skill-name" class="form-input" placeholder="e.g. Tensorflow">
+              </div>
+              <div class="form-group flex-col">
+                <label for="new-skill-cat" class="editor-label">Skill Category Group</label>
+                <input type="text" id="new-skill-cat" class="form-input" placeholder="e.g. Core AI">
+              </div>
+              <button id="btn-add-skill" class="btn btn-primary" style="height: 48px;"><i class="fa-solid fa-plus" style="margin-right: 8px;"></i>Add Skill</button>
+            </div>
+
+            <!-- Skills List Grid -->
+            <div id="skills-cms-list" class="skills-cms-grid">
+              <!-- Rendered dynamically -->
+            </div>
+          </div>
+        </div>
+
+        <!-- Tab 3: Projects Gallery -->
+        <div id="tab-projects" class="tab-pane">
+          <div class="card glass-hover-fx">
+            <div class="flex-between flex-wrap gap-sm" style="margin-bottom: var(--space-md);">
+              <div>
+                <h3 class="card-title text-gradient" style="margin-bottom: 0;"><i class="fa-solid fa-laptop-code" style="margin-right: 8px;"></i>Projects Gallery</h3>
+                <p class="text-muted" style="font-size: var(--font-size-sm); margin-top: 4px;">Update, append, or delete projects and upload project preview images.</p>
+              </div>
+              <button id="btn-add-project" class="btn btn-primary"><i class="fa-solid fa-plus" style="margin-right: 8px;"></i>Add New Project</button>
+            </div>
+
+            <div id="projects-cms-list" class="flex-col gap-md">
+              <!-- Rendered dynamically -->
+            </div>
+          </div>
+        </div>
+
+        <!-- Tab 4: Milestones & Experience -->
+        <div id="tab-milestones" class="tab-pane">
+          <div class="card glass-hover-fx">
+            <div class="flex-between flex-wrap gap-sm" style="margin-bottom: var(--space-md);">
+              <div>
+                <h3 class="card-title text-gradient" style="margin-bottom: 0;"><i class="fa-solid fa-briefcase" style="margin-right: 8px;"></i>Milestones & Experience Timeline</h3>
+                <p class="text-muted" style="font-size: var(--font-size-sm); margin-top: 4px;">Update, append, or delete timeline achievements and internships.</p>
+              </div>
+              <button id="btn-add-milestone" class="btn btn-primary"><i class="fa-solid fa-plus" style="margin-right: 8px;"></i>Add New Milestone</button>
+            </div>
+            
+            <div id="milestones-cms-list" class="flex-col gap-md">
+              <!-- Rendered dynamically -->
+            </div>
+          </div>
+        </div>
+
+        <!-- Tab 5: Credentials & Certs -->
+        <div id="tab-credentials" class="tab-pane">
+          <div class="card glass-hover-fx">
+            <div class="flex-between flex-wrap gap-sm" style="margin-bottom: var(--space-md);">
+              <div>
+                <h3 class="card-title text-gradient" style="margin-bottom: 0;"><i class="fa-solid fa-file-invoice" style="margin-right: 8px;"></i>Credentials & Certifications</h3>
+                <p class="text-muted" style="font-size: var(--font-size-sm); margin-top: 4px;">Modify authority details, dates, and upload new certificate images.</p>
+              </div>
+              <button id="btn-add-certificate" class="btn btn-primary"><i class="fa-solid fa-plus" style="margin-right: 8px;"></i>Add Certification</button>
+            </div>
+
+            <div id="certificates-cms-list" class="flex-col gap-md">
+              <!-- Rendered dynamically -->
+            </div>
+          </div>
+        </div>
+
+        <!-- Tab 6: Raw JSON Editor -->
+        <div id="tab-raw" class="tab-pane">
+          <div class="card glass-hover-fx">
+            <div class="flex-between flex-wrap gap-sm" style="margin-bottom: var(--space-md);">
+              <div>
+                <h3 class="card-title text-gradient" style="margin-bottom: 0;"><i class="fa-solid fa-database" style="margin-right: 8px;"></i>Raw Database Workspace</h3>
+                <p class="text-muted" style="font-size: var(--font-size-sm); margin-top: 4px;">Pre-validated database structure editor.</p>
+              </div>
+              <button id="btn-prettify-json" class="btn" style="padding: 0.5rem 1rem; border-color: var(--border-color);"><i class="fa-solid fa-code" style="margin-right: 8px;"></i>Prettify JSON</button>
+            </div>
+            
+            <textarea id="json-editor-field" class="json-editor-textarea" spellcheck="false" autocomplete="off"></textarea>
+          </div>
+        </div>
+
+      </section>
+
+    </div>
+  </main>
+
+  <div id="toast-container" class="toast-container"></div>
+
+  <!-- Client Interaction Logic -->
+  <script>
+    const ACCESS_KEY = 'kishore123';
+    let db = {};
+
+    // 0. Light/Dark Mode Theme Toggle Initialization
+    const themeBtn = document.getElementById('theme-toggle-btn');
+    const themeIcon = themeBtn ? themeBtn.querySelector('i') : null;
+    let currentTheme = localStorage.getItem('theme') || 'dark';
+
+    // Synchronize HTML dataset attribute
+    document.documentElement.setAttribute('data-theme', currentTheme);
+    document.body.setAttribute('data-theme', currentTheme);
+    updateThemeToggleIcon(currentTheme);
+
+    if (themeBtn) {
+      themeBtn.addEventListener('click', () => {
+        currentTheme = currentTheme === 'dark' ? 'light' : 'dark';
+        document.documentElement.setAttribute('data-theme', currentTheme);
+        document.body.setAttribute('data-theme', currentTheme);
+        localStorage.setItem('theme', currentTheme);
+        updateThemeToggleIcon(currentTheme);
+      });
+    }
+
+    function updateThemeToggleIcon(theme) {
+      if (!themeIcon) return;
+      if (theme === 'dark') {
+        themeIcon.className = 'fa-solid fa-sun';
+      } else {
+        themeIcon.className = 'fa-solid fa-moon';
+      }
+    }
+
+    // 1. Session Auth Check
+    const authScreen = document.getElementById('auth-screen');
+    const authForm = document.getElementById('auth-form');
+    const passInput = document.getElementById('admin-password');
+
+    if (sessionStorage.getItem('cms_authed') === 'true') {
+      authScreen.style.display = 'none';
+      bootstrapCMS();
+    }
+
+    authForm.addEventListener('submit', (e) => {
+      e.preventDefault();
+      if (passInput.value === ACCESS_KEY) {
+        sessionStorage.setItem('cms_authed', 'true');
+        authScreen.style.opacity = '0';
+        setTimeout(() => authScreen.style.display = 'none', 300);
+        showToast('Login authorized. Hello Kishore M!', 'success');
+        bootstrapCMS();
+      } else {
+        showToast('Access denied. Password incorrect.', 'error');
+        passInput.value = '';
+        passInput.focus();
+      }
+    });
+
+    // 2. Tab Navigation Binding
+    const tabs = document.querySelectorAll('.tab-btn');
+    const panes = document.querySelectorAll('.tab-pane');
+
+    tabs.forEach(btn => {
+      btn.addEventListener('click', () => {
+        tabs.forEach(b => b.classList.remove('active'));
+        panes.forEach(p => p.classList.remove('active'));
+
+        btn.classList.add('active');
+        const targetTab = btn.getAttribute('data-tab');
+        document.getElementById(targetTab).classList.add('active');
+
+        // Sync visual changes to JSON tab if switching there
+        if (targetTab === 'tab-raw') {
+          syncFormsToDatabase();
+          document.getElementById('json-editor-field').value = JSON.stringify(db, null, 2);
+        }
+      });
+    });
+
+    // 3. Database Bootstrap
+    async function bootstrapCMS() {
+      try {
+        const response = await fetch('./portfolio.json');
+        if (!response.ok) throw new Error('Data fetch request unresolved.');
+        db = await response.json();
+
+        // Load values
+        loadProfileTab();
+        renderSkillsTab();
+        renderProjectsTab();
+        renderMilestonesTab();
+        renderCertificatesTab();
+      } catch (err) {
+        console.error(err);
+        showToast('Failed loading database payload: ' + err.message, 'error');
+      }
+    }
+
+    // 4. Tab 1: Profile Loading
+    function loadProfileTab() {
+      const p = db.profile || {};
+      document.getElementById('prof-name').value = p.name || '';
+      document.getElementById('prof-title').value = p.title || '';
+      document.getElementById('prof-location').value = p.location || '';
+      document.getElementById('prof-email').value = p.socials?.email || '';
+      document.getElementById('prof-github').value = p.socials?.github || '';
+      document.getElementById('prof-linkedin').value = p.socials?.linkedin || '';
+
+      document.getElementById('prof-lead').value = p.aboutShort || '';
+      document.getElementById('prof-bio').value = db.about?.biography || '';
+    }
+
+    function syncProfileFromForms() {
+      if (!db.profile) db.profile = {};
+      if (!db.profile.socials) db.profile.socials = {};
+      if (!db.about) db.about = {};
+
+      db.profile.name = document.getElementById('prof-name').value;
+      db.profile.title = document.getElementById('prof-title').value;
+      db.profile.location = document.getElementById('prof-location').value;
+      db.profile.socials.email = document.getElementById('prof-email').value;
+      db.profile.socials.github = document.getElementById('prof-github').value;
+      db.profile.socials.linkedin = document.getElementById('prof-linkedin').value;
+
+      db.profile.aboutShort = document.getElementById('prof-lead').value;
+      db.about.biography = document.getElementById('prof-bio').value;
+    }
+
+    // 5. Tab 2: Skills Directory
+    const skillsList = document.getElementById('skills-cms-list');
+    const skillNameInput = document.getElementById('new-skill-name');
+    const skillCatInput = document.getElementById('new-skill-cat');
+    const addSkillBtn = document.getElementById('btn-add-skill');
+
+    function renderSkillsTab() {
+      skillsList.innerHTML = '';
+      const skills = db.skills || [];
+
+      skills.forEach((skill, idx) => {
+        const chip = document.createElement('div');
+        chip.className = 'skill-cms-chip';
+        chip.innerHTML = `
+          <div class="flex-col" style="gap: 2px;">
+            <strong style="font-size: var(--font-size-sm);">${skill.name}</strong>
+            <span class="text-muted" style="font-size: 0.75rem; text-transform: uppercase; letter-spacing:0.02em;">${skill.category}</span>
+          </div>
+          <button class="btn-chip-delete" onclick="deleteSkill(${idx})" aria-label="Delete skill"><i class="fa-solid fa-trash"></i></button>
+        `;
+        skillsList.appendChild(chip);
+      });
+    }
+
+    window.deleteSkill = function(idx) {
+      db.skills.splice(idx, 1);
+      renderSkillsTab();
+      showToast('Skill chip removed.', 'success');
+    };
+
+    addSkillBtn.addEventListener('click', () => {
+      const name = skillNameInput.value.trim();
+      const cat = skillCatInput.value.trim();
+
+      if (!name || !cat) {
+        showToast('Please enter both skill name and category group.', 'error');
+        return;
+      }
+
+      if (!db.skills) db.skills = [];
+      db.skills.push({ name: name, category: cat });
+      
+      skillNameInput.value = '';
+      skillCatInput.value = '';
+      renderSkillsTab();
+      showToast('Skill chip added!', 'success');
+    });
+
+    // 6. Tab 3: Projects Gallery
+    const projectsList = document.getElementById('projects-cms-list');
+    const addProjectBtn = document.getElementById('btn-add-project');
+
+    function renderProjectsTab() {
+      projectsList.innerHTML = '';
+      const projects = db.projects || [];
+
+      projects.forEach((proj, idx) => {
+        const card = document.createElement('div');
+        card.className = 'item-card';
+        card.innerHTML = `
+          <button class="btn-delete" onclick="deleteProject(${idx})" aria-label="Delete project"><i class="fa-solid fa-trash"></i></button>
+          
+          <div class="form-row">
+            <div class="form-group flex-col">
+              <label class="editor-label">Project Title</label>
+              <input type="text" class="form-input proj-title" value="${proj.title || ''}">
+            </div>
+            <div class="form-group flex-col">
+              <label class="editor-label">GitHub Repository URL</label>
+              <input type="url" class="form-input proj-github" value="${proj.github || ''}">
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group flex-col">
+              <label class="editor-label">Project Tags / Technologies (comma-separated)</label>
+              <input type="text" class="form-input proj-tags" value="${(proj.tags || []).join(', ')}" placeholder="e.g. React, Node.js, CSS">
+            </div>
+          </div>
+
+          <div class="form-group flex-col">
+            <label class="editor-label">Project Description</label>
+            <textarea class="form-input form-textarea proj-desc" style="height: 90px;">${proj.description || ''}</textarea>
+          </div>
+
+          <div class="form-group flex-col">
+            <label class="editor-label">Project Preview Image</label>
+            <div class="upload-container">
+              <img src="${proj.image || ''}" alt="Preview" class="upload-preview proj-img-preview-${idx}" style="${proj.image ? '' : 'display:none;'}">
+              <div class="upload-fallback proj-img-fallback-${idx} flex-col flex-center" style="${proj.image ? 'display:none;' : 'display:flex; width:120px; height:80px; border:1px solid var(--border-color); border-radius:var(--radius-sm); color:var(--text-muted);'}">
+                <i class="fa-solid fa-image" style="font-size: 1.5rem;"></i>
+              </div>
+              <div class="flex-col gap-sm" style="flex:1;">
+                <input type="text" class="form-input proj-path-${idx}" value="${proj.image || ''}" placeholder="Image file path">
+                <div class="flex-row gap-sm" style="align-items: center;">
+                  <input type="file" id="proj-uploader-${idx}" accept="image/*" style="display:none;" onchange="handleProjectImageUpload(event, ${idx})">
+                  <button type="button" class="btn" style="padding: 0.5rem 1rem; font-size: var(--font-size-xs);" onclick="document.getElementById('proj-uploader-${idx}').click()">
+                    <i class="fa-solid fa-upload" style="margin-right:8px;"></i>Upload Project Image
+                  </button>
+                  <span class="text-muted proj-progress-${idx}" style="font-size:0.75rem;"></span>
+                </div>
+              </div>
+            </div>
+          </div>
+        `;
+        projectsList.appendChild(card);
+      });
+    }
+
+    window.deleteProject = function(idx) {
+      syncProjectsFromForms();
+      db.projects.splice(idx, 1);
+      renderProjectsTab();
+      showToast('Project removed.', 'success');
+    };
+
+    window.handleProjectImageUpload = async function(e, idx) {
+      const file = e.target.files[0];
+      if (!file) return;
+
+      const progressLabel = document.querySelector(`.proj-progress-${idx}`);
+      progressLabel.textContent = 'Uploading...';
+
+      try {
+        const headers = new Headers();
+        headers.append("X-Filename", file.name);
+        headers.append("X-Folder", "projects");
+
+        const response = await fetch('./api/upload', {
+          method: 'POST',
+          headers: headers,
+          body: file
+        });
+
+        if (response.ok) {
+          const resData = await response.json();
+          document.querySelector(`.proj-path-${idx}`).value = resData.path;
+          document.querySelector(`.proj-img-preview-${idx}`).src = resData.path;
+          document.querySelector(`.proj-img-preview-${idx}`).style.display = 'block';
+          document.querySelector(`.proj-img-fallback-${idx}`).style.display = 'none';
+          progressLabel.textContent = 'Uploaded successfully!';
+          showToast('Project image uploaded and linked successfully!', 'success');
+        } else {
+          const errData = await response.json();
+          throw new Error(errData.error || 'Server error.');
+        }
+      } catch (err) {
+        progressLabel.textContent = 'Upload failed.';
+        showToast('Image upload failed: ' + err.message, 'error');
+      }
+    };
+
+    function syncProjectsFromForms() {
+      const cards = projectsList.querySelectorAll('.item-card');
+      const projects = [];
+
+      cards.forEach((card, idx) => {
+        const tagsVal = card.querySelector('.proj-tags').value;
+        const tagsArr = tagsVal.split(',').map(t => t.trim()).filter(t => t.length > 0);
+
+        projects.push({
+          title: card.querySelector('.proj-title').value,
+          description: card.querySelector('.proj-desc').value,
+          tags: tagsArr,
+          github: card.querySelector('.proj-github').value,
+          image: card.querySelector(`.proj-path-${idx}`).value
+        });
+      });
+
+      db.projects = projects;
+    }
+
+    addProjectBtn.addEventListener('click', () => {
+      syncProjectsFromForms();
+      if (!db.projects) db.projects = [];
+      db.projects.push({
+        title: '',
+        description: '',
+        tags: [],
+        github: '',
+        image: ''
+      });
+      renderProjectsTab();
+      showToast('New project template appended.', 'success');
+    });
+
+    // 7. Tab 4: Milestones (Experience)
+    const milestonesList = document.getElementById('milestones-cms-list');
+    const addMilestoneBtn = document.getElementById('btn-add-milestone');
+
+    function renderMilestonesTab() {
+      milestonesList.innerHTML = '';
+      const experiences = db.experience || [];
+
+      experiences.forEach((exp, idx) => {
+        const card = document.createElement('div');
+        card.className = 'item-card';
+        card.innerHTML = `
+          <button class="btn-delete" onclick="deleteMilestone(${idx})" aria-label="Delete milestone"><i class="fa-solid fa-trash"></i></button>
+          
+          <div class="form-row">
+            <div class="form-group flex-col">
+              <label class="editor-label">Milestone Type</label>
+              <select class="form-input exp-type" style="height: 48px;">
+                <option value="internship" ${exp.type === 'internship' || exp.type === 'Internship' ? 'selected' : ''}>Internship</option>
+                <option value="workshop" ${exp.type === 'workshop' || exp.type === 'Workshop' ? 'selected' : ''}>Workshop</option>
+                <option value="training" ${exp.type === 'training' || exp.type === 'Training' ? 'selected' : ''}>Training</option>
+                <option value="achievement" ${exp.type === 'achievement' || exp.type === 'Achievement' ? 'selected' : ''}>Achievement</option>
+              </select>
+            </div>
+            <div class="form-group flex-col">
+              <label class="editor-label">Role / Milestone Title</label>
+              <input type="text" class="form-input exp-role" value="${exp.role || ''}">
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group flex-col">
+              <label class="editor-label">Company / Institution</label>
+              <input type="text" class="form-input exp-company" value="${exp.company || ''}">
+            </div>
+            <div class="form-group flex-col">
+              <label class="editor-label">Duration / Date</label>
+              <input type="text" class="form-input exp-duration" value="${exp.duration || ''}">
+            </div>
+          </div>
+
+          <div class="form-group flex-col">
+            <label class="editor-label">Description (supporting \\n for line breaks)</label>
+            <textarea class="form-input form-textarea exp-desc" style="height: 90px;">${exp.description || ''}</textarea>
+          </div>
+        `;
+        milestonesList.appendChild(card);
+      });
+    }
+
+    window.deleteMilestone = function(idx) {
+      syncMilestonesFromForms();
+      db.experience.splice(idx, 1);
+      renderMilestonesTab();
+      showToast('Milestone card removed.', 'success');
+    };
+
+    function syncMilestonesFromForms() {
+      const cards = milestonesList.querySelectorAll('.item-card');
+      const experiences = [];
+
+      cards.forEach(card => {
+        experiences.push({
+          type: card.querySelector('.exp-type').value,
+          role: card.querySelector('.exp-role').value,
+          company: card.querySelector('.exp-company').value,
+          duration: card.querySelector('.exp-duration').value,
+          description: card.querySelector('.exp-desc').value
+        });
+      });
+
+      db.experience = experiences;
+    }
+
+    addMilestoneBtn.addEventListener('click', () => {
+      syncMilestonesFromForms();
+      if (!db.experience) db.experience = [];
+      db.experience.push({
+        type: 'internship',
+        role: '',
+        company: '',
+        duration: '',
+        description: ''
+      });
+      renderMilestonesTab();
+      showToast('New milestone template appended.', 'success');
+    });
+
+    // 8. Tab 5: Credentials (Certifications & Uploads)
+    const certsList = document.getElementById('certificates-cms-list');
+    const addCertBtn = document.getElementById('btn-add-certificate');
+
+    function renderCertificatesTab() {
+      certsList.innerHTML = '';
+      const certs = db.certifications || [];
+
+      certs.forEach((cert, idx) => {
+        const card = document.createElement('div');
+        card.className = 'item-card';
+        card.innerHTML = `
+          <button class="btn-delete" onclick="deleteCertificate(${idx})" aria-label="Delete credential"><i class="fa-solid fa-trash"></i></button>
+          
+          <div class="form-row">
+            <div class="form-group flex-col">
+              <label class="editor-label">Certificate Title</label>
+              <input type="text" class="form-input cert-name" value="${cert.name || ''}">
+            </div>
+            <div class="form-group flex-col">
+              <label class="editor-label">Authority / Issuer</label>
+              <input type="text" class="form-input cert-authority" value="${cert.authority || ''}">
+            </div>
+            <div class="form-group flex-col">
+              <label class="editor-label">Issued Year</label>
+              <input type="text" class="form-input cert-date" value="${cert.date || ''}">
+            </div>
+          </div>
+
+          <div class="form-group flex-col">
+            <label class="editor-label">Certificate Image Asset</label>
+            <div class="upload-container">
+              <img src="${cert.thumbnail || ''}" alt="Preview" class="upload-preview cert-img-preview-${idx}" style="${cert.thumbnail ? '' : 'display:none;'}">
+              <div class="upload-fallback cert-img-fallback-${idx} flex-col flex-center" style="${cert.thumbnail ? 'display:none;' : 'display:flex; width:120px; height:80px; border:1px solid var(--border-color); border-radius:var(--radius-sm); color:var(--text-muted);'}">
+                <i class="fa-solid fa-award" style="font-size: 1.5rem;"></i>
+              </div>
+              <div class="flex-col gap-sm" style="flex:1;">
+                <input type="text" class="form-input cert-thumbnail cert-path-${idx}" value="${cert.thumbnail || ''}" placeholder="Image file path">
+                <div class="flex-row gap-sm" style="align-items: center;">
+                  <input type="file" id="file-uploader-${idx}" accept="image/*" style="display:none;" onchange="handleImageUpload(event, ${idx})">
+                  <button type="button" class="btn" style="padding: 0.5rem 1rem; font-size: var(--font-size-xs);" onclick="document.getElementById('file-uploader-${idx}').click()">
+                    <i class="fa-solid fa-upload" style="margin-right:8px;"></i>Upload Certificate Image
+                  </button>
+                  <span class="text-muted progress-${idx}" style="font-size:0.75rem;"></span>
+                </div>
+              </div>
+            </div>
+          </div>
+        `;
+        certsList.appendChild(card);
+      });
+    }
+
+    window.deleteCertificate = function(idx) {
+      syncCertificatesFromForms();
+      db.certifications.splice(idx, 1);
+      renderCertificatesTab();
+      showToast('Credential card removed.', 'success');
+    };
+
+    window.handleImageUpload = async function(e, idx) {
+      const file = e.target.files[0];
+      if (!file) return;
+
+      const progressLabel = document.querySelector(`.progress-${idx}`);
+      progressLabel.textContent = 'Uploading...';
+
+      try {
+        const headers = new Headers();
+        headers.append("X-Filename", file.name);
+        headers.append("X-Folder", "certs");
+
+        const response = await fetch('./api/upload', {
+          method: 'POST',
+          headers: headers,
+          body: file
+        });
+
+        if (response.ok) {
+          const resData = await response.json();
+          document.querySelector(`.cert-path-${idx}`).value = resData.path;
+          document.querySelector(`.cert-img-preview-${idx}`).src = resData.path;
+          document.querySelector(`.cert-img-preview-${idx}`).style.display = 'block';
+          document.querySelector(`.cert-img-fallback-${idx}`).style.display = 'none';
+          progressLabel.textContent = 'Uploaded successfully!';
+          showToast('Image uploaded and linked successfully!', 'success');
+        } else {
+          const errData = await response.json();
+          throw new Error(errData.error || 'Server error.');
+        }
+      } catch (err) {
+        progressLabel.textContent = 'Upload failed.';
+        showToast('Image upload failed: ' + err.message, 'error');
+      }
+    };
+
+    function syncCertificatesFromForms() {
+      const cards = certsList.querySelectorAll('.item-card');
+      const certs = [];
+
+      cards.forEach((card, idx) => {
+        certs.push({
+          id: `cert-${idx + 1}`,
+          name: card.querySelector('.cert-name').value,
+          authority: card.querySelector('.cert-authority').value,
+          date: card.querySelector('.cert-date').value,
+          thumbnail: card.querySelector(`.cert-path-${idx}`).value
+        });
+      });
+
+      db.certifications = certs;
+    }
+
+    addCertBtn.addEventListener('click', () => {
+      syncCertificatesFromForms();
+      if (!db.certifications) db.certifications = [];
+      db.certifications.push({
+        id: `cert-${db.certifications.length + 1}`,
+        name: '',
+        authority: '',
+        date: '',
+        thumbnail: ''
+      });
+      renderCertificatesTab();
+      showToast('New credential template appended.', 'success');
+    });
+
+    // 9. Tab 5: Prettify JSON Handler
+    const prettifyBtn = document.getElementById('btn-prettify-json');
+    const jsonField = document.getElementById('json-editor-field');
+
+    prettifyBtn.addEventListener('click', () => {
+      try {
+        const parsed = JSON.parse(jsonField.value);
+        db = parsed;
+        jsonField.value = JSON.stringify(db, null, 2);
+        showToast('JSON formatted successfully!', 'success');
+      } catch (err) {
+        showToast('Formatting Failed: ' + err.message, 'error');
+      }
+    });
+
+    // 10. Sync & Save Master Actions
+    function syncFormsToDatabase() {
+      // Sync profile & bio
+      syncProfileFromForms();
+      // Sync projects
+      syncProjectsFromForms();
+      // Sync milestones
+      syncMilestonesFromForms();
+      // Sync credentials
+      syncCertificatesFromForms();
+    }
+
+    const saveMasterBtn = document.getElementById('btn-save-master');
+
+    saveMasterBtn.addEventListener('click', async () => {
+      // Get currently active tab and sync its values to database first
+      const activeTabBtn = document.querySelector('.tab-btn.active');
+      const currentTab = activeTabBtn.getAttribute('data-tab');
+
+      if (currentTab === 'tab-raw') {
+        try {
+          db = JSON.parse(jsonField.value);
+        } catch (err) {
+          showToast('Cannot Save: Invalid JSON syntax inside Code editor.', 'error');
+          return;
+        }
+      } else {
+        syncFormsToDatabase();
+      }
+
+      saveMasterBtn.disabled = true;
+      saveMasterBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Saving...';
+
+      try {
+        const response = await fetch('./api/save', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(db)
+        });
+
+        if (response.ok) {
+          showToast('Database changes saved to portfolio.json!', 'success');
+          // Reload panels to align structures
+          loadProfileTab();
+          renderSkillsTab();
+          renderProjectsTab();
+          renderMilestonesTab();
+          renderCertificatesTab();
+        } else {
+          const errData = await response.json();
+          throw new Error(errData.error || 'Server connection failed.');
+        }
+      } catch (err) {
+        showToast('Failed writing database: ' + err.message, 'error');
+      } finally {
+        saveMasterBtn.disabled = false;
+        saveMasterBtn.innerHTML = '<i class="fa-solid fa-floppy-disk"></i> Save Database';
+      }
+    });
+
+    // 11. Toast triggers
+    function showToast(message, type = 'success') {
+      const toastContainer = document.getElementById('toast-container');
+      if (!toastContainer) return;
+
+      const toast = document.createElement('div');
+      toast.className = `toast toast-${type}`;
+      
+      const icon = type === 'success' 
+        ? 'fa-solid fa-circle-check' 
+        : 'fa-solid fa-circle-xmark';
+
+      toast.innerHTML = `
+        <i class="${icon}" aria-hidden="true" style="font-size:1.25rem;"></i>
+        <span style="font-size: var(--font-size-sm); font-weight:var(--font-weight-medium);">${message}</span>
+      `;
+
+      toastContainer.appendChild(toast);
+
+      setTimeout(() => {
+        toast.style.opacity = '0';
+        toast.style.transform = 'translateY(10px)';
+        toast.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
+        setTimeout(() => toast.remove(), 500);
+      }, 4500);
+    }
+  </script>
+</body>
+</html>
