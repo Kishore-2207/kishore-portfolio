@@ -24,7 +24,7 @@ This portfolio features a custom built visual Admin Panel to update projects, ce
    powershell -ExecutionPolicy Bypass -File .\serve.ps1
    ```
 4. Open your web browser and navigate to:
-   👉 **[http://localhost:8080/admin.html](http://localhost:8080/admin.html)**
+   👉 **[http://localhost:8085/admin.html](http://localhost:8085/admin.html)**
 5. Authenticate using your credentials:
    - **Password**: `kishore123`
 6. Make your changes in the visual forms, add new entries, upload certification or project images, and click **"Save Database"** in the sidebar.

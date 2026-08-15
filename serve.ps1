@@ -1,7 +1,7 @@
 # Lightweight Local Web Server using Net.HttpListener
 # Runs a static file server on http://localhost:8000
 
-$port = 8080
+$port = 8085
 $listener = New-Object System.Net.HttpListener
 $listener.Prefixes.Add("http://localhost:$port/")
 
