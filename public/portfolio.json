@@ -1,0 +1,128 @@
+{
+  "profile": {
+    "name": "Kishore M",
+    "title": "AI & Data Science Undergrad'28",
+    "avatar": "./assets/images/profile.jpg",
+    "location": "Tiruchirappalli, Tamil Nadu, India",
+    "aboutShort": "Passionate AI & Data Science Undergraduate with hands-on experience in building intelligent systems and leveraging data-driven insights.",
+    "socials": {
+      "github": "https://github.com/Kishore-2207",
+      "linkedin": "https://www.linkedin.com/in/kishore-m-7b5547328?utm_source=share_via&utm_content=profile&utm_medium=member_android",
+      "email": "mkishore22072006@gmail.com"
+    }
+  },
+  "about": {
+    "biography": "I am a 3rd-year undergraduate student at Saranathan College of Engineering, pursuing a Bachelor of Technology in Artificial Intelligence and Data Science. I am deeply passionate about leveraging the power of data and machine learning to solve real-world problems. My academic focus is on developing intelligent systems that can learn from data, make predictions, and automate complex tasks. I am a proactive learner with hands-on experience in building machine learning models, working with various datasets, and exploring the latest trends in AI.",
+    "education": [
+      {
+        "degree": "Bachelor of Technology in Artificial Intelligence and Data Science",
+        "institution": "Saranathan College of Engineering",
+        "year": "2024 - 2028"
+      }
+    ],
+    "statistics": [
+      {
+        "label": "Years Experience",
+        "value": "Fresher with determination on gaining experinece"
+      },
+      {
+        "label": "Projects Completed",
+        "value": "2"
+      }
+    ],
+    "timeline": [
+      {
+        "year": "2024 - 2028",
+        "role": "Undergraduate Student",
+        "company": "Saranathan College of Engineering",
+        "description": "Bachelor of Technology in Artificial Intelligence and Data Science"
+      },
+      {
+        "year": "...",
+        "role": "Loading...",
+        "company": "TBD",
+        "description": "will be updated in future"
+      }
+    ]
+  },
+  "skills": {
+    "programming": [
+      {
+        "name": "Python"
+      },
+      {
+        "name": "Java"
+      },
+      {
+        "name": "C"
+      }
+    ],
+    "ai": [
+      {
+        "name": "Machine Learning"
+      },
+      {
+        "name": "Data Science"
+      },
+      {
+        "name": "Deep Learning"
+      }
+    ],
+    "web": [
+      {
+        "name": "HTML5"
+      },
+      {
+        "name": "CSS3"
+      },
+      {
+        "name": "PHP"
+      }
+    ],
+    "database": [
+      {
+        "name": "SQL"
+      },
+      {
+        "name": "MongoDB"
+      }
+    ],
+    "tools": [
+      {
+        "name": "Git"
+      }
+    ]
+  },
+  "projects": [
+    {
+      "id": "1",
+      "title": "Stock Price Prediction using Machine Learning",
+      "description": "Machine Learning-based stock price prediction system for BRITANNIA using historical market data, feature engineering, technical indicators, and multiple regression models including Linear Regression, Random Forest, Gradient Boosting, and XGBoost.",
+      "tags": [
+        "Python",
+        "Machine Learning",
+        "XGBoost",
+        "Pandas",
+        "Scikit-Learn"
+      ],
+      "github": "https://github.com/Kishore-2207",
+      "image": "./assets/images/project1.jpg"
+    }
+  ],
+  "milestones": [
+    {
+      "title": "Machine Learning Foundations",
+      "date": "2024",
+      "description": "Completed foundational projects in predictive analytics and model training."
+    }
+  ],
+  "certifications": [
+    {
+      "id": "cert-1",
+      "name": "Data Science Fundamentals",
+      "authority": "Online Learning",
+      "date": "2024",
+      "thumbnail": "./assets/images/certs/cert1.jpg"
+    }
+  ]
+}

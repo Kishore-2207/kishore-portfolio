@@ -1225,8 +1225,32 @@
             })
           });
 
+          // Also update public/portfolio.json for Netlify builds
+          try {
+            const pubUrl = `https://api.github.com/repos/${REPO_OWNER}/${REPO_NAME}/contents/public/portfolio.json`;
+            const pubGet = await fetch(pubUrl, { headers: { 'Authorization': `token ${token}` } });
+            let pubSha = undefined;
+            if (pubGet.ok) {
+              const pubData = await pubGet.json();
+              pubSha = pubData.sha;
+            }
+            await fetch(pubUrl, {
+              method: 'PUT',
+              headers: {
+                'Authorization': `token ${token}`,
+                'Content-Type': 'application/json'
+              },
+              body: JSON.stringify({
+                message: 'Update public/portfolio.json via Cloud CMS',
+                content: b64Content,
+                sha: pubSha,
+                branch: REPO_BRANCH
+              })
+            });
+          } catch(e) {}
+
           if (putRes.ok) {
-            showToast('Saved directly to GitHub! Live site will update in ~1 min.', 'success');
+            showToast('Saved directly to GitHub & Netlify! Live sites will update in ~1 min.', 'success');
           } else {
             const errData = await putRes.json();
             throw new Error(errData.message || 'GitHub commit failed.');
