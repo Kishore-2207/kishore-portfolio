@@ -11,37 +11,41 @@ Your portfolio website is hosted live at:
 ---
 
 ## 🛠️ Visual Content Management System (CMS)
-This portfolio features a custom built visual Admin Panel to update projects, certifications, skills, milestones, and profile bio information directly from your browser without editing the source code.
 
-### How to Run and Use the Admin Panel:
-1. Open **PowerShell** on your computer.
-2. Navigate to your project folder:
-   ```powershell
-   cd C:\portfolio_kishore
-   ```
-3. Start the local server script:
-   ```powershell
-   powershell -ExecutionPolicy Bypass -File .\serve.ps1
-   ```
-4. Open your web browser and navigate to:
-   👉 **[http://localhost:8085/admin.html](http://localhost:8085/admin.html)**
-5. Authenticate using your credentials:
-   - **Password**: `kishore123`
-6. Make your changes in the visual forms, add new entries, upload certification or project images, and click **"Save Database"** in the sidebar.
+This portfolio features a built-in visual Admin Panel to update projects, certifications, skills, milestones, and profile bio information directly from your web browser.
+
+### ⚡ Method 1: Cloud Mode (Recommended — Zero PowerShell / Zero Local Server)
+Edit your portfolio from **any device (including mobile phones)** anywhere in the world!
+
+1. Open your browser and navigate to:  
+   👉 **[https://kishore-2207.github.io/kishore-portfolio/admin.html](https://kishore-2207.github.io/kishore-portfolio/admin.html)**
+2. Authenticate using password: `kishore123`.
+3. Click the **GitHub (Cloud Sync)** button in the top header.
+4. Paste your **GitHub Personal Access Token** (created in 30 seconds at [GitHub Token Settings](https://github.com/settings/tokens/new) with `repo` scope).
+5. Edit your content or upload images, then click **"Save Database"**.
+6. Changes are committed directly to GitHub and your live site updates automatically in ~1 minute!
 
 ---
 
-## 🚀 Pushing Updates to the Live Site
-Once you save your changes in the local Admin Panel, push the updated database (`portfolio.json`) to GitHub to update your live website:
+### 💻 Method 2: Local Server Mode
+If you prefer running a local server on your PC without a GitHub token:
 
-1. Open a terminal inside `C:\portfolio_kishore` (or stop the server in the current terminal using `Ctrl+C`).
-2. Run the following Git commands:
+1. Open **PowerShell** and navigate to your project folder:
+   ```powershell
+   cd C:\portfolio_kishore
+   ```
+2. Start the local server script:
+   ```powershell
+   powershell -ExecutionPolicy Bypass -File .\serve.ps1
+   ```
+3. Navigate to **[http://localhost:8085/admin.html](http://localhost:8085/admin.html)** in your browser.
+4. Make your changes and click **"Save Database"**.
+5. Push updates to GitHub:
    ```powershell
    git add .
    git commit -m "Update portfolio content via CMS"
    git push
    ```
-*Within 1 minute, GitHub Pages will automatically build and publish your updates live!*
 
 ---
 
