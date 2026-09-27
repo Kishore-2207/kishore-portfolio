@@ -95,7 +95,6 @@
   },
   "projects": [
     {
-      "id": "1",
       "title": "Stock Price Prediction using Machine Learning",
       "description": "Machine Learning-based stock price prediction system for BRITANNIA using historical market data, feature engineering, technical indicators, and multiple regression models including Linear Regression, Random Forest, Gradient Boosting, and XGBoost.",
       "tags": [
@@ -112,7 +111,6 @@
       "image": "./assets/images/stocks.png"
     },
     {
-      "id": "2",
       "title": "Personal Portfolio",
       "description": "Architecture: Engineered a premium personal portfolio website decoupled from its visual presentation using a central data schema (portfolio.json).\nInteractivity: Developed GPU-accelerated UI features including mouse-tracking 3D card tilts, timeline focus overlays, and dynamic brand pop-ups.\nAdministration: Created a secure, responsive visual Admin Dashboard (CMS) for managing biography details, skills, timeline milestones, and projects.\nBackend API: Configured local PowerShell REST endpoints to support secure database updates and binary image uploads to folder assets directly from the browser.\nDeployment: Deployed the static codebase live to GitHub Pages with automated builds synced to branch commits.",
       "tags": [
@@ -127,32 +125,32 @@
   ],
   "experience": [
     {
-      "type": "Internship",
+      "type": "internship",
       "role": "Web Development Intern",
       "company": "CodeBind Technologies",
       "duration": "June 2025 - July 2025",
       "description": "I successfully completed my Web Development Internship at CodeBind Technologies, Trichy, where I gained hands-on experience and strengthened my practical skills. During the internship, I completed:\\n->Web Development Internship\\n->Online Shopping Website Project (HTML, CSS, PHP & MySQL)\\n->Implant Training Program\\n->Artificial Intelligence Workshop\\n->Corporate Training & Placement Aptitude Test"
     },
     {
-      "type": "Workshop",
+      "type": "workshop",
       "role": "UI/UX Workshop Participant",
       "company": "NIT Trichy in collaboration with GUVI",
       "duration": "2026",
       "description": "Participated in UI/UX Workshop conducted by NIT Trichy in collaboration with GUVI."
     },
     {
-      "type": "Training",
+      "type": "training",
       "role": "Foundational Course on Applied Machine Learning and AI",
       "company": "Confederation of Indian Industry (CII)",
       "duration": "2026",
       "description": "Participated in Foundational Course on Applied Machine Learning and AI conducted by Confederation of Indian Industry (CII)."
     },
     {
-      "type": "Achievement",
+      "type": "achievement",
       "role": "1st Place Winner",
       "company": "The Institution of Engineers (India)",
       "duration": "2026",
-      "description": "Won 1st Place in Quiz Competition conducted by The Institution of Engineers (India)."
+      "description": "Won 1st Place in Quiz Competition conducted by The Institution of Engineers (IEI) (India)."
     }
   ],
   "certifications": [
